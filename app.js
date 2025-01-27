@@ -6,6 +6,11 @@ let btns = ["yellow", "red", "blue", "green"];
 let h2 = document.querySelector("h2");
 let level = 0;
 let started = false;
+let highestScore = localStorage.getItem('highestScore') || 0;  // Retrieve highest score from localStorage
+
+// Display highest score on the page
+let highestScoreDisplay = document.querySelector(".highest-score");
+highestScoreDisplay.innerText = `Highest Score: ${highestScore}`;
 
 document.addEventListener("keypress", function () {
   if (started == false) {
@@ -38,8 +43,6 @@ function levelUp() {
   let randColor = btns[randIdx];
   let randbtn = document.querySelector(`.${randColor}`);
 
-  //   console.log(randIdx);
-  //   console.log(randbtn);
   console.log(gameSeq);
   gameSeq.push(randColor);
   gameFlash(randbtn);
@@ -56,6 +59,13 @@ function checkAns(idx) {
     setTimeout(function(){
         document.querySelector("body").style.backgroundColor = "white";
     },200);
+    
+    // Check and update highest score
+    if (level > highestScore) {
+      highestScore = level;
+      localStorage.setItem('highestScore', highestScore);  // Save to localStorage
+      highestScoreDisplay.innerText = `Highest Score: ${highestScore}`;  // Update display
+    }
     reset();
   }
 }
